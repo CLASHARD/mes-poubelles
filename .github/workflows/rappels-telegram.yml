@@ -1,0 +1,41 @@
+name: Rappels Telegram
+
+on:
+  schedule:
+    - cron: "0 19 * * *"
+      timezone: "Europe/Paris"
+  workflow_dispatch:
+    inputs:
+      send_test:
+        description: "Envoyer un message de test sur Telegram"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  send-reminder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Récupérer les fichiers
+        uses: actions/checkout@v7
+
+      - name: Préparer Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Envoyer le rappel Telegram
+        run: node scripts/send-reminders.mjs
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          SUPABASE_USER_ID: ${{ secrets.SUPABASE_USER_ID }}
+          SEND_TEST: ${{ inputs.send_test }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
