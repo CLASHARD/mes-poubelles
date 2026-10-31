@@ -1,0 +1,37 @@
+INSTALLATION DES RAPPELS TELEGRAM
+
+1) Dans le dépôt GitHub, ajoute les deux chemins suivants à la racine :
+   .github/workflows/rappels-telegram.yml
+   scripts/send-reminders.mjs
+
+2) Dans GitHub, ouvre :
+   Settings > Secrets and variables > Actions > New repository secret
+
+   Crée ces deux secrets exactement :
+   Name: TELEGRAM_BOT_TOKEN
+   Secret: colle le token obtenu auprès de @BotFather
+
+   Name: TELEGRAM_CHAT_ID
+   Secret: 8925348485
+
+3) Enregistre les fichiers et les deux secrets.
+
+4) Pour tester :
+   - Ouvre l'onglet Actions du dépôt.
+   - Choisis le workflow « Rappels Telegram ».
+   - Clique sur « Run workflow ».
+   - Coche « Envoyer un message de test sur Telegram ».
+   - Clique sur « Run workflow ».
+   Tu dois recevoir un message de test dans Telegram.
+
+5) Les rappels automatiques sont planifiés chaque jour à 19 h, fuseau Europe/Paris.
+   Le workflow lit le fichier collectes.json et envoie un message uniquement si une
+   collecte est prévue le lendemain.
+
+IMPORTANT :
+- Ne publie jamais le token dans un fichier du dépôt, même public.
+- Pour révoquer un token exposé, passe par @BotFather et régénère-le.
+- Dans la version actuelle du site, les dates modifiées depuis l'interface sont
+  enregistrées dans le navigateur seulement. Les rappels automatiques lisent
+  collectes.json dans GitHub. Une prochaine étape sera nécessaire pour synchroniser
+  les modifications du site avec le calendrier utilisé par Telegram.
