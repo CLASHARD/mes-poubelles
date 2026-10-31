@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172033">
+  <meta name="description" content="Calendrier privé et synchronisé de collecte des poubelles jaune et ménagère.">
+  <title>Mes poubelles</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-icon">🗑️</span><div><h1>Mes poubelles</h1><p>Mon calendrier de collecte</p></div></div>
+    <span class="year-pill">2026</span>
+  </header>
+
+  <main class="container">
+    <section id="auth-panel" class="panel auth-panel">
+      <p class="eyebrow">ACCÈS PERSONNEL</p>
+      <h2>Connecte-toi à ton calendrier</h2>
+      <p class="intro">Ton calendrier est synchronisé en ligne. Connecte-toi pour retrouver les mêmes dates sur ton téléphone et ton ordinateur.</p>
+      <form id="auth-form">
+        <label for="email">Adresse e-mail</label>
+        <input id="email" type="email" autocomplete="email" required placeholder="ton@email.fr">
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" autocomplete="current-password" minlength="6" required placeholder="6 caractères minimum">
+        <div class="auth-actions">
+          <button id="login-button" class="primary-button" type="submit">Se connecter</button>
+          <button id="signup-button" class="secondary-button" type="button">Créer mon compte</button>
+        </div>
+      </form>
+      <p id="auth-message" class="message" role="status" aria-live="polite"></p>
+      <p class="privacy-note">Chaque compte ne peut consulter et modifier que ses propres collectes.</p>
+    </section>
+
+    <section id="account-panel" class="panel account-panel" hidden>
+      <div class="account-top"><div><p class="eyebrow">SESSION CONNECTÉE</p><strong id="account-email"></strong></div><button id="logout-button" class="secondary-button" type="button">Déconnexion</button></div>
+      <details class="account-details"><summary>Identifiant technique pour les rappels Telegram</summary><p>À copier dans les secrets GitHub sous le nom <code>SUPABASE_USER_ID</code>.</p><div class="copy-row"><code id="account-user-id"></code><button id="copy-user-id" class="edit-button" type="button">Copier</button></div></details>
+      <p id="app-message" class="message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="calendar-app" hidden>
+      <section class="hero">
+        <div><p class="eyebrow">PROCHAINE COLLECTE</p><h2 id="next-title">Chargement…</h2><p id="next-date" class="hero-date"></p></div>
+        <div class="hero-icon" id="next-icon">🗑️</div>
+      </section>
+
+      <section class="stats" aria-label="Résumé">
+        <article class="stat-card yellow-card"><div class="stat-top"><span>🟨 Poubelle jaune</span><span class="dot yellow-dot"></span></div><strong id="yellow-next">—</strong><small>Prochaine collecte non confirmée</small></article>
+        <article class="stat-card red-card"><div class="stat-top"><span>🟥 Poubelle ménagère</span><span class="dot red-dot"></span></div><strong id="red-next">—</strong><small>Prochaine collecte non confirmée</small></article>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">CALENDRIER PARTAGÉ</p><h2>Prochaines collectes</h2></div><button id="add-button" class="primary-button" type="button">＋ Ajouter</button></div>
+        <div class="filters" role="group" aria-label="Filtrer les collectes">
+          <button class="filter active" data-filter="toutes" type="button">Toutes</button>
+          <button class="filter" data-filter="jaune" type="button">🟨 Jaune</button>
+          <button class="filter" data-filter="menagere" type="button">🟥 Ménagère</button>
+        </div>
+        <div id="collection-list" class="collection-list"></div>
+        <p id="empty-state" class="empty-state" hidden>Aucune collecte à afficher. Ajoute une date pour commencer.</p>
+      </section>
+
+      <section class="panel settings-panel">
+        <div class="section-heading"><div><p class="eyebrow">RAPPELS</p><h2>Notifications Telegram</h2></div><span class="status-badge">Rappel prévu à 19 h</span></div>
+        <div class="reminder-row"><span class="reminder-icon">🔔</span><div><strong>La veille de chaque collecte</strong><p>Le rappel lit directement les dates non confirmées dans la base partagée.</p></div></div>
+        <p class="notice">Les ajouts, modifications, suppressions et confirmations « Sortie » sont enregistrés en ligne et synchronisés entre tes appareils.</p>
+      </section>
+    </section>
+    <footer>Mes poubelles · Calendrier personnel synchronisé</footer>
+  </main>
+
+  <dialog id="collection-dialog">
+    <form id="collection-form">
+      <div class="dialog-heading"><div><p class="eyebrow">CALENDRIER</p><h2 id="dialog-title">Ajouter une collecte</h2></div><button type="button" class="close-button" id="close-dialog" aria-label="Fermer">×</button></div>
+      <input type="hidden" id="edit-id">
+      <label for="type">Type de poubelle</label>
+      <select id="type" required><option value="jaune">🟨 Jaune</option><option value="menagere">🟥 Ménagère</option></select>
+      <label for="date">Date de collecte</label>
+      <input id="date" type="date" required>
+      <div class="dialog-actions"><button type="button" class="secondary-button" id="cancel-dialog">Annuler</button><button type="submit" class="primary-button">Enregistrer</button></div>
+      <button type="button" id="delete-button" class="delete-button" hidden>Supprimer cette collecte</button>
+    </form>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
