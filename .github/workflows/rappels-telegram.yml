@@ -2,7 +2,7 @@ name: Rappels Telegram
 
 on:
   schedule:
-    # 14h10 UTC correspond à 15h10 à Paris en heure d'hiver (Pensez à adapter à 13h10 UTC en heure d'été)
+    # 14h10 UTC correspond à 18h50 à Paris en heure d'hiver (Pensez à adapter à 13h10 UTC en heure d'été)
     - cron: "50 17 * * *"
   workflow_dispatch:
     inputs:
