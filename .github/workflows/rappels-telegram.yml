@@ -2,7 +2,7 @@ name: Rappels Telegram
 
 on:
   schedule:
-    - cron: "30 21 * * *"
+    - cron: "10 15 * * *"
       timezone: "Europe/Paris"
   workflow_dispatch:
     inputs:
